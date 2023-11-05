@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/images/favicon-32x32.png"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit&family=Poppins:ital,wght@1,800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="functional.js"></script>
+    <title>Frontend Mentor | Age calculator app</title>
+  </head>
+  <body>
+    <div class="first_sheet">
+      <div class="form_div">
+        <form name="message" method="post">
+          <section>
+            <div class="form-row">
+              <div class="input-group input">
+                <label for="day">D A Y</label>
+                <input
+                  placeholder="DD"
+                  class="inputs"
+                  id="day"
+                  type="number"
+                  value=""
+                  name="day_input"
+                  max="31"
+                  min="1"
+                  required
+                />
+                <br />
+                <span class="error day_error">Must Be A Valid Date</span>
+              </div>
+              <div class="input-group input1">
+                <label for="month">M O N T H</label>
+                <input
+                  placeholder="MM"
+                  class="inputs"
+                  id="month"
+                  type="number"
+                  value=""
+                  name="month_input"
+                  max="12"
+                  min="1"
+                  required
+                />
+                <br />
+                <span class="error month_error">Must Be A Valid Date</span>
+              </div>
+              <div class="input-group input2">
+                <label for="year">Y E A R</label>
+                <input
+                  placeholder="YYYY"
+                  class="inputs"
+                  id="year"
+                  type="number"
+                  value=""
+                  name="year_input"
+                  max="2023"
+                  min="1923"
+                  required
+                />
+                <br />
+                <span class="error year_error">Must Be A Valid Date</span>
+              </div>
+            </div>
+          </section>
+        </form>
+      </div>
+      <span class="pic_hr">
+        <hr />
+        <img class="button_pic" src="assets/images/icon-arrow.svg" alt=""
+      /></span>
+      <div class="text_div">
+        <div><span class="fonts_year"></span>years</div>
+        <div><span class="fonts_month"></span>months</div>
+        <div><span class="fonts_day"></span>days</div>
+      </div>
+    </div>
+    <script>
+      const day = document.getElementById("day");
+      const inputs = document.getElementsByClassName("input");
+      // Use querySelectorAll to select elements by class name
+      const month = document.getElementById("month");
+      const year = document.getElementById("year");
+      const dayTime = document.querySelector(".fonts_day");
+      const monthTime = document.querySelector(".fonts_month");
+      const yearTime = document.querySelector(".fonts_year");
+      const button = document.querySelector(".button_pic");
+      const timeDiv = document.querySelector(".text_div");
+      const year_error = document.querySelector(".year_error");
+      const month_error = document.querySelector(".month_error");
+      const day_error = document.querySelector(".day_error");
+      const currentDate = new Date();
+
+      // const fullCalendar = function () {
+      //   if (currentDate.getDate()) {
+      //   }
+      // };
+      //day validation
+      day.addEventListener("change", () => {
+        if (day.value < 1 || day.value > 31 || day.value.includes(".")) {
+          day.style.border = "1px solid red";
+          day_error.style.display = "block";
+        }
+        if (day.value != "0" + day.value) {
+          day.value = "0" + day.value;
+        }
+        if (day.value.length > 2) {
+          day.value = day.value.slice(1);
+        }
+
+        if (day.value.length > 2) {
+          day.value = "";
+        }
+      });
+
+      //month validation
+
+      month.addEventListener("change", () => {
+        month.value = "0" + month.value;
+        if (month.value > 9) {
+          month.value = month.value.slice(1);
+        }
+
+        if (month.value < 1 || month.value.includes(".") || month.value > 12) {
+          month.style.border = "1px solid red";
+          month_error.style.display = "block";
+          month.value = "";
+        }
+
+        if (month.value.length > 2) {
+          month.value = month.value.slice(1);
+        }
+
+        if (month.value.length > 2) {
+          month.value = "";
+        }
+      });
+
+      // year validation
+
+      year.addEventListener("change", () => {
+        if (
+          year.value < 1923 ||
+          year.value.includes(".") ||
+          year.value > currentDate.getFullYear()
+        ) {
+          year.style.border = "1px solid red";
+          year_error.style.display = "block";
+          year.value = "";
+        }
+      });
+      /////////////////////////////////////////////////////////////////
+      button.addEventListener("click", () => {
+        dayTime.innerHTML = currentDate.getDate() - day.value;
+        monthTime.innerHTML = currentDate.getMonth() - month.value + 1;
+        yearTime.innerHTML = currentDate.getFullYear() - year.value;
+        ////////////////////////////////////////////////////////////
+        //
+        if (dayTime.innerHTML.includes("-")) {
+          dayTime.innerHTML = currentDate.getDate() - day.value + 31;
+          monthTime.innerHTML = currentDate.getMonth() - month.value;
+        }
+        if (day_error.style.display == "block") {
+          dayTime.innerHTML = "--";
+        }
+        if (monthTime.innerHTML.includes("-")) {
+          monthTime.innerHTML = currentDate.getMonth() - month.value + 12;
+        }
+        if (month_error.style.display == "block") {
+          monthTime.innerHTML = "--";
+        }
+        if (
+          day.value > currentDate.getDate() &&
+          month.value == currentDate.getMonth() + 1 &&
+          year.value == currentDate.getFullYear()
+        ) {
+          alert("Not Born Yet");
+          yearTime.innerHTML = "";
+          dayTime.innerHTML = "";
+          monthTime.innerHTML = "";
+        }
+
+        if (year_error.style.display == "block") {
+          yearTime.innerHTML = "--";
+        }
+
+        if (day.value == "" || month.value == "" || year.value == "") {
+          if (true) {
+            alert("Please fill all the fields");
+          }
+
+          if (day.value == "") {
+            dayTime.innerHTML = "--";
+          }
+          if (month.value == "") {
+            monthTime.innerHTML = "--";
+          }
+          if (year.value == "") {
+            yearTime.innerHTML = "--";
+          }
+        }
+      });
+
+      day.addEventListener("input", () => {
+        day.style.border = "";
+        day_error.style.display = "none";
+        dayTime.innerHTML = "";
+      });
+      month.addEventListener("input", () => {
+        month.style.border = "";
+        month_error.style.display = "none";
+        monthTime.innerHTML = "";
+      });
+      year.addEventListener("input", () => {
+        year.style.border = "";
+        year_error.style.display = "none";
+        yearTime.innerHTML = "";
+      });
+      ////////////////////////////////////////////////////
+    </script>
+  </body>
+</html>
