@@ -165,7 +165,7 @@
       button.addEventListener("click", () => {
         dayTime.innerHTML = currentDate.getDate() - day.value;
         monthTime.innerHTML = currentDate.getMonth() - month.value + 1;
-        yearTime.innerHTML = currentDate.getFullYear() - year.value;
+        yearTime.innerHTML = currentDate.getFullYear() - year.value - 1;
         ////////////////////////////////////////////////////////////
         //
         if (dayTime.innerHTML.includes("-")) {
@@ -210,6 +210,9 @@
           if (year.value == "") {
             yearTime.innerHTML = "--";
           }
+        }
+        if (year.value == currentDate.getFullYear()) {
+          yearTime.innerHTML = "0";
         }
       });
 
